@@ -1,0 +1,15 @@
+# DUO with the efficient (poly9) curriculum of DUO++ used for every run in the paper.
+defaults:
+  - duo
+  - _self_
+
+curriculum:
+  mode: poly9
+  top_k: 2
+  gumbel_tau_log10_start: -3.0
+  gumbel_tau_log10_end: -3.0
+  gamma_min: -3.55
+  gamma_max: -1.85
+  start: 0
+  end: 500_000
+  cache_dir: ${hydra:runtime.cwd}/cache/transform_approx_coefficients

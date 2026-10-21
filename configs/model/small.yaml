@@ -1,0 +1,25 @@
+name: small
+type: ddit
+hidden_size: 768
+cond_dim: 128
+length: 1024
+n_blocks: 12
+n_heads: 12
+scale_by_sigma: True
+dropout: 0.1
+tie_word_embeddings: False
+vocab_lookup: True
+# Looping: blocks [start, start + num_layers) share weights and run S times.
+loop:
+  enabled: False
+  start: 1                  # first looped block (zero-based)
+  num_layers: 2             # width of the looped slice
+  train_min: 1              # training depth range {train_min, ..., train_max}
+  train_max: 12
+  schedule: uniform         # uniform | flop_proportional | noise_proportional
+  flop_power: 1.0           # flop_proportional: p(S) ~ F(S)^(-flop_power)
+  num_noise_bands: null     # noise_proportional: null -> gcd(world_size*grad_accum, span)
+  eval_count: 12            # eval depth S (depth cap when eval_policy=adaptive)
+  eval_policy: fixed        # fixed | adaptive
+  adaptive_epsilon: 0.1     # adaptive stop: ||h_s - h_{s-1}|| / ||h_s|| < epsilon
+  eval_count_sweep: null    # extra fixed depths logged at each validation, e.g. [1,6,8,12]
